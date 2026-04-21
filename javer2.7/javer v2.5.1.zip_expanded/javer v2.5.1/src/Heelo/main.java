@@ -1,5 +1,6 @@
 package Heelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class main {
@@ -7,7 +8,7 @@ public class main {
 
 	public static void main(String[] args) {
 		secretaries grammateia = new secretaries("usrgrammateia","grammateia","cs");
-		List<students> lista_mathiton = grammateia.student_to_be_graded_list_creator();//εστω οτι αυτος ο κωδικας δουλευει γιατι μου βγαζει ερρορς 
+		ArrayList<students> lista_mathiton = grammateia.student_to_be_graded_list_creator();//εστω οτι αυτος ο κωδικας δουλευει γιατι μου βγαζει ερρορς 
 		students kostas =lista_mathiton.getFirst();
 		//os mathitis pos tha dw ton bathmo mou ? 
 		//lista foititon pros vathmologisi
@@ -20,7 +21,7 @@ public class main {
 		//φτιαχνει ενα grades για καθε μαθητη το οποιο θα το βαζει στην λιστα του course για καθε εξεταστικη
 		//επειτα ο φοιτητης θα και ο καθηγητης θα βλεπουν τα δικα τους μεσω του course αντιστοιχα οκ παμε
 		
-		List<grades> vathmologimeni_lista =patsakis.student_to_be_graded_list_creator(lista_mathiton, cs101);
+		ArrayList<grades> vathmologimeni_lista =patsakis.student_to_be_graded_list_creator(lista_mathiton, cs101);
 		
 		System.out.print(vathmologimeni_lista);//πλακα πλακα η υλοποιηση εδω δεν χρειαζεται αλλα εστω οτι δουλευει 
 		//γιατι για την ωρα η λιστα βγαινει κενη , αλλα επσισης οχι ερρορς που είναι  καλο

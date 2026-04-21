@@ -32,9 +32,9 @@ public class professors extends Users{
 		return antikeimeno_bathmou;
 		
 	}
-	public <grades> List<grades> student_to_be_graded_list_creator(List<students> lista_matiton,Courses mathima){ 
+	public <grades> ArrayList<grades> student_to_be_graded_list_creator(ArrayList<students> lista_matiton,Courses mathima){ 
 		
-		List<grades> grades_list = new ArrayList<grades>();
+		ArrayList<grades> grades_list = new ArrayList<grades>();
 		for (students mathites:lista_matiton) {
 			if(mathites.getDepartment()!=this.getDepartment()) {
 				//throw new Exception("Error");
