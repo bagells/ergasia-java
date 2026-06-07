@@ -1,0 +1,64 @@
+body {
+	width: 100%;
+	height: 100%;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+*=====NAVIGATION======*/ .container {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto
+}
+
+.navbar {
+	border: 0;
+	z-index: 9999;
+
+
+}
+
+.logo {
+	display: block;
+	height: auto;
+	width: 52px;
+	padding-top: 5px;
+	margin-right: 14px;
+}
+
+.navbar-brand>img {
+	height: 100%;
+	padding: 15px;
+	width: auto;
+}
+
+.navbar .nav>li>a {
+	line-height: 50px;
+}
+
+.navbar-header h1 {
+	letter-spacing: 1px;
+	color: #000033;
+	font-family: 'Georgia', cursive;
+}
+
+.navbar li a,
+.navbar {
+	color: black !important;
+	font-size: 15px;
+	transition: all 0.6s 0s;
+}
+
+.navbar-toggle {
+	background-color: white;
+	border: 0;
+}
+
+.navbar-nav li a:hover,
+.navbar-nav li.active a {
+	color: blue !important;
+}
