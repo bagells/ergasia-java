@@ -35,7 +35,6 @@ public class RegisterServlet extends HttpServlet {
 		System.out.println("Registration attempt - Role: " + role + ", Username: " + username);
 		
 		// Check if username is available
-
 		String usernameValidation = dao.signupusernameCheck(username);
 		
 		if (usernameValidation.equals("ok")) {
@@ -55,6 +54,10 @@ public class RegisterServlet extends HttpServlet {
 				if (role.equals("secretary")) {
 					// TODO: Implement secretary page
 					System.out.println("New secretary registered: " + username);
+					request.setAttribute("role", "secretary");
+					request.setAttribute("username", username);
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/secretary.jsp");
+					dispatcher.forward(request, response);
 				} else if (role.equals("student")) {
 					System.out.println("New student registered: " + username);
 					request.setAttribute("role", "student");

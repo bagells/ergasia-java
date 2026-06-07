@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+
+import dao.SecretaryDao;
 import dao.StudentDao;
 import dao.SystemDao;
 import jakarta.servlet.RequestDispatcher;
@@ -16,11 +18,13 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SystemDao dao;
 	private StudentDao studentDao;
+	private SecretaryDao secretaryDao;
 
 	public LoginServlet() {
 		super();
 		dao = new SystemDao();
 		studentDao = new StudentDao();
+		secretaryDao= new SecretaryDao();
 		System.out.println("LoginServlet initialized: " + dao);
 	}
 
@@ -96,6 +100,9 @@ public class LoginServlet extends HttpServlet {
 						// Secretary or other role
 						session.setAttribute("role", "secretary");
 						System.out.println("User logged in as SECRETARY: " + username);
+						System.out.println("Registration Number: " + secretaryDao.getSecretaryRegistrationNumber(username));
+						RequestDispatcher view = request.getRequestDispatcher("/secretary.jsp");
+						view.forward(request, response);
 						// TODO: Implement secretary page
 					}
 				}
