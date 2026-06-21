@@ -6,7 +6,7 @@ create table if not exists student(
                                       username varchar(30),
                                       name varchar(30),
                                       surename varchar(30),
-                                      password varchar(30),
+                                      password varchar(256),
                                       department varchar(30),
                                       primary key (id)
 );
@@ -41,7 +41,7 @@ create table if not exists proffesor(
                                         username varchar(30),
                                         surename varchar(30),
                                         courses numeric,
-                                        password varchar(30),
+                                        password varchar(256),
                                         department varchar(30),
                                         primary key (id),
                                         foreign key (courses) REFERENCES courses(course_id)
@@ -61,7 +61,7 @@ create table if not exists secratary(
                                         name varchar(30),
                                         surename varchar(30),
                                         courses numeric,
-                                        password varchar(30),
+                                        password varchar(256),
                                         department varchar(30),
                                         primary key (id),
                                         foreign key (courses) REFERENCES courses(course_id)
