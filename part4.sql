@@ -41,6 +41,14 @@ create table if not exists dilosi(
                                             foreign key (courses) REFERENCES courses(course_id)
 
     );
+create table if not exists dilosi_k(
+  id numeric,
+  p_id numeric,
+  c_id numeric,
+    primary key (id),
+    foreign key(p_id) references proffesor(id),
+    foreign key (c_id) references courses(course_Id)
+);
     create table if not exists secratary(
                                             id numeric,
                                             name varchar(30),
