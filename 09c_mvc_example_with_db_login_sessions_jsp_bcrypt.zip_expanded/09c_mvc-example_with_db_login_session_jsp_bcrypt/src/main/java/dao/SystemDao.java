@@ -118,7 +118,7 @@ public class SystemDao {
 					java.sql.Timestamp lockUntil = new java.sql.Timestamp(
 						System.currentTimeMillis() + (15 * 60 * 1000) // 15 minutes in milliseconds
 					);
-					
+
 					PreparedStatement ps2 = connection.prepareStatement(
 						"UPDATE USERS SET failed_attempts=?, account_locked=TRUE, locked_until=? WHERE username=?"
 					);
@@ -236,7 +236,7 @@ public class SystemDao {
 	public String signupusernameCheck(String username) {
 		String answer = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM USERS WHERE username=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM student WHERE username=?");
             preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
             
@@ -255,32 +255,42 @@ public class SystemDao {
 	 * Register a new user with BCrypt hashed password
 	 * Note: The 'salt' parameter is no longer needed as BCrypt handles salt internally
 	 */
-	public void signup(int registrationnumber, String username, String name, String surname, 
+	public void signup(int id, String username, String name, String surename,
 	                   String department, String role, String plainTextPassword) {
 		try {
 			// Hash the password using BCrypt
+
 			String hashedPassword = hashPassword(plainTextPassword);
 
 			if (role.equals("student")) {
 				// Insert into USERS table - no separate salt column needed
-				PreparedStatement preparedStatement1 = connection.prepareStatement(
-					"INSERT INTO USERS (username, password, role) VALUES (?, ?, ?)"
+				/*PreparedStatement preparedStatement1 = connection.prepareStatement(
+					"INSERT INTO student (id,username,name,surename,password,department) VALUES (?,?,?,?,?,?)"
+						//εδω στο αρχικό είχε role αλλα εμείς θα το βαλούμε κατευθείαν στο student table
 				);
-				preparedStatement1.setString(1, username);
-				preparedStatement1.setString(2, hashedPassword);
-				preparedStatement1.setString(3, role);
-				preparedStatement1.executeUpdate();
+				preparedStatement1.setInt(1, id);
+				preparedStatement1.setString(2, username);
+				preparedStatement1.setString(3, name);
+				preparedStatement1.setString(4, surename);
+				preparedStatement1.setString(5, hashedPassword);
+				preparedStatement1.setString(6,department);
 
+				preparedStatement1.executeUpdate();
+				*/
 				// Insert into STUDENTS table
 				PreparedStatement preparedStatement = connection.prepareStatement(
-					"INSERT INTO STUDENTS (RegistrationNumber, Name, Surname, Department, USERS_username) VALUES (?, ?, ?, ?, ?)"
+					"INSERT INTO student (id,username, name, surename, password,department) VALUES (?,?,?,?,?,?)"
 				);
-				preparedStatement.setInt(1, registrationnumber);
-				preparedStatement.setString(2, name);
-				preparedStatement.setString(3, surname);
-				preparedStatement.setString(4, department);
-				preparedStatement.setString(5, username);
+				preparedStatement.setInt(1, id);
+				preparedStatement.setString(2, username);
+				preparedStatement.setString(3, name);
+				preparedStatement.setString(4, surename);
+				preparedStatement.setString(5, hashedPassword);
+				preparedStatement.setString(6, department);
+
+			//	preparedStatement.setString(6, username);
 				preparedStatement.executeUpdate();
+				connection.close();
 			} else if (role.equals("admin")) {
 				// TODO: Implement admin registration
 			} else {
