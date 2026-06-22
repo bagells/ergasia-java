@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+
+import dao.SecretaryDao;
 import dao.StudentDao;
 import dao.SystemDao;
 import jakarta.servlet.RequestDispatcher;
@@ -16,11 +18,13 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SystemDao dao;
 	private StudentDao studentDao;
+	private SecretaryDao secretaryDao;
 
 	public LoginServlet() {
 		super();
 		dao = new SystemDao();
 		studentDao = new StudentDao();
+		secretaryDao= new SecretaryDao();
 		System.out.println("LoginServlet initialized: " + dao);
 	}
 
@@ -35,15 +39,17 @@ public class LoginServlet extends HttpServlet {
 
 		if (!usernameValidation.equals(username)) {
 			// Username doesn't exist
+			System.out.println("username_doesnt_exist");
 			request.setAttribute("message", usernameValidation);
 			request.setAttribute("username", username);
 			RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
 			view.forward(request, response);
 		} else {
 			// Username exists, check if account is locked
-			String lockStatus = dao.checkAccountLockStatus(username);
+			System.out.println("username_exists");
+		//	String lockStatus = dao.checkAccountLockStatus(username);
 			
-			if (lockStatus.equals("locked")) {
+		/*	if (lockStatus.equals("locked")) {
 				// Account is locked
 				java.sql.Timestamp lockedUntil = dao.getLockedUntilTime(username);
 				String message;
@@ -68,25 +74,26 @@ public class LoginServlet extends HttpServlet {
 				view.forward(request, response);
 				return;
 			}
-			
+			*/
 			// Account not locked, proceed with password check
 			String passwordValidation = dao.passwordCheck(username, password);
-
+			System.out.println("password_check");
 			if (passwordValidation.equals("You logged in!")) {
+				System.out.println("Περασε");
 				// Login successful - reset failed attempts
 				dao.resetFailedAttempts(username);
 				
-				String role = dao.getRole(username);
+				String role = "student";//εδω κανονικα θα πρεπει να παιρνει το καθε αντιστοιχο role
 				HttpSession session = request.getSession(true);
 				
 				synchronized(session) {
 					session.setAttribute("username", username);
 					session.setAttribute("role", role);
-					session.setAttribute("registrationnumber", studentDao.getStudentRegistrationNumber(username));
+					session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
 
 					if (role.equals("student")) {
 						System.out.println("User logged in as STUDENT: " + username);
-						System.out.println("Registration Number: " + studentDao.getStudentRegistrationNumber(username));
+						System.out.println("Registration Numbider: " + studentDao.getStudentRegistrationNumber(username));
 						RequestDispatcher view = request.getRequestDispatcher("/student.jsp");
 						view.forward(request, response);
 					} else if (role.equals("professor")) {
@@ -96,6 +103,9 @@ public class LoginServlet extends HttpServlet {
 						// Secretary or other role
 						session.setAttribute("role", "secretary");
 						System.out.println("User logged in as SECRETARY: " + username);
+						System.out.println("Registration Number: " + secretaryDao.getSecretaryRegistrationNumber(username));
+						RequestDispatcher view = request.getRequestDispatcher("/secretary.jsp");
+						view.forward(request, response);
 						// TODO: Implement secretary page
 					}
 				}
