@@ -41,15 +41,15 @@ public class StudentDao {
 		Students student=new Students();
 		try {
 
-			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from STUDENTS where USERS_username=?");
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from student where username=?");
 			preparedStatement.setString(1, username);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				student.setRegistrationNumber(rs.getInt("RegistrationNumber"));
-            	student.setUsername(rs.getString("USERS_username"));
-            	student.setName(rs.getString("Name"));
-            	student.setSurname(rs.getString("Surname"));
-            	student.setDepartment(rs.getString("Department"));
+				student.setRegistrationNumber(rs.getInt("id"));
+            	student.setUsername(rs.getString("username"));
+            	student.setName(rs.getString("name"));
+            	student.setSurname(rs.getString("surname"));
+            	student.setDepartment(rs.getString("department"));
             	student.setRole("student");
             	//String htmlRow = createHTMLRow(code, name, surName, dept);
 				//out.println(htmlRow);
