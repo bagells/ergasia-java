@@ -94,7 +94,7 @@ public class LoginServlet extends HttpServlet {
 				synchronized(session) {
 					session.setAttribute("username", username);
 					session.setAttribute("role", role);
-					session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
+					//session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
 
 					if (role.equals("student")) {
 						session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
@@ -104,12 +104,14 @@ public class LoginServlet extends HttpServlet {
 						view.forward(request, response);
 					} else if (role.equals("professor")) {
 						// TODO: Implement professor page
+						session.setAttribute("id", professorDao.getProfessorRegistrationNumber(username));
 						System.out.println("User logged in as PROFESSOR: " + username);
 						System.out.println("Registration Number: " + professorDao.getProfessorRegistrationNumber(username));
 						RequestDispatcher view = request.getRequestDispatcher("/professor.jsp");
 						view.forward(request, response);
 					} else {
 						// Secretary or other role
+						session.setAttribute("id", secretaryDao.getSecretaryRegistrationNumber(username));
 						session.setAttribute("role", "secretary");
 						System.out.println("User logged in as SECRETARY: " + username);
 						System.out.println("Registration Number: " + secretaryDao.getSecretaryRegistrationNumber(username));
