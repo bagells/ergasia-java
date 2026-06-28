@@ -27,8 +27,7 @@ public class SecretaryController extends HttpServlet {
         super();
         secretaryDao = new SecretaryDao();
 
-
-	}
+    }
 
 
 
@@ -44,20 +43,20 @@ public class SecretaryController extends HttpServlet {
 
 
 
-		if(action.equalsIgnoreCase("viewStudentDetails")) {
-			request.setAttribute("action","viewStudentDetails");
+		if(action.equalsIgnoreCase("viewCourse")) {
+			request.setAttribute("action","viewCourse");
 
-			System.out.println("Name= "+secretary.getName());
+			//System.out.println("Name= "+secretary.getName());
 			session.setAttribute("surname", secretary.getSurname());
 			session.setAttribute("department", secretary.getDepartment());
 
-			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/secretary.jsp");
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/CourseList.jsp");
 			requestDispatcher.forward(request,response);
-		}else if (action.equalsIgnoreCase("ViewStudentGrades")){
-//			//TODO
-		}else if (action.equalsIgnoreCase("updateDetails")){
-			//ΤΟΔΟ
+		}else if (action.equalsIgnoreCase("AssignCourseToProf")){
+			request.setAttribute("action","AssignCourseToProf");
 
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/AssignCourse.jsp");
+			requestDispatcher.forward(request,response);
 		}
 	}
 
