@@ -98,7 +98,7 @@ public class SystemDao {
 	 * @param username The username to check
 	 * @return "locked" if locked, "unlocked" if not locked, or error message
 	 */
-	public String checkAccountLockStatus(String username) {
+/*	public String checkAccountLockStatus(String username) {
 		String status = null;
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -115,7 +115,7 @@ public class SystemDao {
 					// Check if temporary lock has expired
 					if (lockedUntil != null && lockedUntil.before(new java.sql.Timestamp(System.currentTimeMillis()))) {
 						// Lock expired, automatically unlock the account
-						unlockAccount(username);
+				//		unlockAccount(username);
 						status = "unlocked";
 					} else {
 						status = "locked";
@@ -129,12 +129,13 @@ public class SystemDao {
 			status = "error";
 		}
 		return status;
-	}
+	}*/
 
 	/**
 	 * Increment failed login attempts and lock account if threshold is reached
 	 * @param username The username
 	 */
+	/*
 	public void incrementFailedAttempts(String username) {
 		try {
 			// Get current failed attempts
@@ -179,13 +180,13 @@ public class SystemDao {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	/**
 	 * Reset failed attempts counter after successful login
 	 * @param username The username
 	 */
-	public void resetFailedAttempts(String username) {
-		try {
+	//public void resetFailedAttempts(String username) {
+/*		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE USERS SET failed_attempts=0, account_locked=FALSE, locked_until=NULL WHERE username=?"
 			);
@@ -194,13 +195,13 @@ public class SystemDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	} */
 
 	/**
 	 * Unlock an account (removes lock and resets attempts)
 	 * @param username The username to unlock
 	 */
-	public void unlockAccount(String username) {
+/*	public void unlockAccount(String username) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE USERS SET account_locked=FALSE, failed_attempts=0, locked_until=NULL WHERE username=?"
@@ -211,7 +212,7 @@ public class SystemDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Get the timestamp when account will be unlocked
@@ -463,7 +464,7 @@ public class SystemDao {
         }
 	}
 
-	public String getRole(String username) {
+/*	public String getRole(String username) {
 		String role = null;
 		try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT role FROM student WHERE username=?");
@@ -477,5 +478,5 @@ public class SystemDao {
             e.printStackTrace();
         }
 		return role;
-	}
+	}*/
 }
