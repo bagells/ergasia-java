@@ -1,0 +1,86 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>University Grading Management System - Students' menu</title>
+    <meta name="description" content="University Grades App">
+    <script src="./javascript/error.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/student.css">
+    <link rel="stylesheet" type="text/css" href="css/table.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<%
+
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setHeader("Expires", "0"); // Proxies.
+
+    if(session.getAttribute("username")==null)
+    {
+        response.sendRedirect("index.jsp");
+    }else{
+
+        if(!"professor".equals(session.getAttribute("role")))
+        {
+
+            session.removeAttribute("username");
+            session.invalidate();
+            request.setAttribute("msg","Access to page denied, you were logged out for security reasons.");
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        }
+    }
+%>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#myNavbar">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <h1 class="brand brand-name navbar-left" style="font-family:Georgia" > University Grading Management System - Student's Menu </h1>
+        </div>
+
+        <%String name="professor"; %><div style="text-align:right;color:#bfbfbf;size:12px;">Welcome, <%= session.getAttribute("username") %> </div>
+
+        <div class="collapse navbar-collapse navbar-right" id="myNavbar">
+
+            <ul class="nav navbar-nav">
+                <li><a href="professor?action=viewGradesPerCourse">
+                    View grades per course</a></li>
+                <li><a href="professor?action=NewGrades">
+                    Add new grades
+                </a></li>
+                <li><a href="logout">Log out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<%if ("viewStudentDetails".equals(request.getAttribute("action"))) {%>
+
+<table id="tabl"
+       style="border: 1px solid black; margin-top: 200px; margin-left: auto; margin-right: auto;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td data-column="Name"><%=session.getAttribute("name")%></td>
+        <td data-column="Surname"><%=session.getAttribute("surname")%></td>
+        <td data-column="Username"><%=session.getAttribute("username")%></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<%} %>
+</body>
+</html>
