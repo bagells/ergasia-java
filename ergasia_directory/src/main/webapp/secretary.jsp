@@ -13,6 +13,28 @@
 </head>
 <body>
 
+<%
+
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+	response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+	response.setHeader("Expires", "0"); // Proxies.
+
+	if(session.getAttribute("username")==null)
+	{
+		response.sendRedirect("index.jsp");
+	}else{
+
+		if(!"secretary".equals(session.getAttribute("role")))
+		{
+
+			session.removeAttribute("username");
+			session.invalidate();
+			request.setAttribute("msg","Access to page denied, you were logged out for security reasons.");
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		}
+	}
+%>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -28,10 +50,12 @@
         <div class="collapse navbar-collapse navbar-right" id="myNavbar">
 
 	<ul class="nav navbar-nav">
-		<li><a href="secretary?action=viewSecretaryDetails">View
-				secretary's personal data</a></li>
-		<li><a href="secretary?action=viewStudentGrades">Show
-				student's grades</a></li>
+		<li><a href="secretary?action=viewCourse">
+			View course list
+		</a></li>
+		<li><a href="secretary?action=AssignCourseToProf">
+			Assign Professor to course
+		</a></li>
 		<li><a href="logout">Log out</a></li>
 	</ul>
         </div>
