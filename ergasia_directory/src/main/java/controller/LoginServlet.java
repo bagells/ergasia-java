@@ -86,7 +86,7 @@ public class LoginServlet extends HttpServlet {
 			if (passwordValidation.equals("You logged in!")) {
 				System.out.println("Περασε");
 				// Login successful - reset failed attempts
-				dao.resetFailedAttempts(username);
+			//	dao.resetFailedAttempts(username);
 				
 			//	String role = "student";//εδω κανονικα θα πρεπει να παιρνει το καθε αντιστοιχο role
 				HttpSession session = request.getSession(true);
