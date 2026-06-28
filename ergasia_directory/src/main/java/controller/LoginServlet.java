@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import dao.ProfessorDao;
 import dao.SecretaryDao;
 import dao.StudentDao;
 import dao.SystemDao;
@@ -19,12 +20,14 @@ public class LoginServlet extends HttpServlet {
 	private SystemDao dao;
 	private StudentDao studentDao;
 	private SecretaryDao secretaryDao;
+	private ProfessorDao professorDao;
 
 	public LoginServlet() {
 		super();
 		dao = new SystemDao();
 		studentDao = new StudentDao();
 		secretaryDao= new SecretaryDao();
+		professorDao = new ProfessorDao();
 		System.out.println("LoginServlet initialized: " + dao);
 	}
 
@@ -33,25 +36,21 @@ public class LoginServlet extends HttpServlet {
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String role = request.getParameter("role_sin");
-		System.out.println("Ο ΡΟΛΟΣ ΜΟΥ ΕΙΝΑΙ");
-		System.out.println(role);
+		
 		// Check if username exists
-		String usernameValidation = dao.loginusernameCheck(username,role);
+		String usernameValidation = dao.loginusernameCheck(username);
 
 		if (!usernameValidation.equals(username)) {
 			// Username doesn't exist
-			System.out.println("username_doesnt_exist");
 			request.setAttribute("message", usernameValidation);
 			request.setAttribute("username", username);
 			RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
 			view.forward(request, response);
 		} else {
 			// Username exists, check if account is locked
-			System.out.println("username_exists");
-		//	String lockStatus = dao.checkAccountLockStatus(username);
+			String lockStatus = dao.checkAccountLockStatus(username);
 			
-		/*	if (lockStatus.equals("locked")) {
+			if (lockStatus.equals("locked")) {
 				// Account is locked
 				java.sql.Timestamp lockedUntil = dao.getLockedUntilTime(username);
 				String message;
@@ -76,32 +75,33 @@ public class LoginServlet extends HttpServlet {
 				view.forward(request, response);
 				return;
 			}
-			*/
+			
 			// Account not locked, proceed with password check
-			String passwordValidation = dao.passwordCheck(username, password,role);
-			System.out.println("password_check");
+			String passwordValidation = dao.passwordCheck(username, password);
+
 			if (passwordValidation.equals("You logged in!")) {
-				System.out.println("Περασε");
 				// Login successful - reset failed attempts
 				dao.resetFailedAttempts(username);
 				
-			//	String role = "student";//εδω κανονικα θα πρεπει να παιρνει το καθε αντιστοιχο role
+				String role = dao.getRole(username);
 				HttpSession session = request.getSession(true);
 				
 				synchronized(session) {
 					session.setAttribute("username", username);
 					session.setAttribute("role", role);
-					session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
+					session.setAttribute("registrationnumber", studentDao.getStudentRegistrationNumber(username));
 
 					if (role.equals("student")) {
-						session.setAttribute("id", studentDao.getStudentRegistrationNumber(username));
 						System.out.println("User logged in as STUDENT: " + username);
-						System.out.println("Registration Numbider: " + studentDao.getStudentRegistrationNumber(username));
+						System.out.println("Registration Number: " + studentDao.getStudentRegistrationNumber(username));
 						RequestDispatcher view = request.getRequestDispatcher("/student.jsp");
 						view.forward(request, response);
 					} else if (role.equals("professor")) {
 						// TODO: Implement professor page
 						System.out.println("User logged in as PROFESSOR: " + username);
+						System.out.println("Registration Number: " + professorDao.getProfessorRegistrationNumber(username));
+						RequestDispatcher view = request.getRequestDispatcher("/professor.jsp");
+						view.forward(request, response);
 					} else {
 						// Secretary or other role
 						session.setAttribute("role", "secretary");
@@ -109,12 +109,11 @@ public class LoginServlet extends HttpServlet {
 						System.out.println("Registration Number: " + secretaryDao.getSecretaryRegistrationNumber(username));
 						RequestDispatcher view = request.getRequestDispatcher("/secretary.jsp");
 						view.forward(request, response);
-						// TODO: Implement secretary page
 					}
 				}
 			} else {
 				// Password incorrect - increment failed attempts
-			//	dao.incrementFailedAttempts(username);
+				dao.incrementFailedAttempts(username);
 				
 				request.setAttribute("message", passwordValidation);
 				RequestDispatcher view = request.getRequestDispatcher("/index.jsp");
