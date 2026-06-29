@@ -13,7 +13,8 @@ create table if not exists student(
 create table if not exists courses(
                                       course_id numeric,
                                       course_name varchar(30),
-                                      primary key (course_id)
+                                      primary key (course_id),
+                                      ejamhno numeric
 );
 create table if not exists grades
 (
