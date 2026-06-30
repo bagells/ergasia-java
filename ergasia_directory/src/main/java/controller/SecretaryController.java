@@ -27,7 +27,8 @@ public class SecretaryController extends HttpServlet {
         super();
         secretaryDao = new SecretaryDao();
 
-    }
+
+	}
 
 
 
@@ -41,8 +42,6 @@ public class SecretaryController extends HttpServlet {
 		session.setAttribute("name", secretary.getName());
 		System.out.println("NAME +  " +secretary.getName());
 
-
-
 		if(action.equalsIgnoreCase("viewCourse")) {
 			request.setAttribute("action","viewCourse");
 
@@ -50,14 +49,23 @@ public class SecretaryController extends HttpServlet {
 			session.setAttribute("surname", secretary.getSurname());
 			session.setAttribute("department", secretary.getDepartment());
 
-			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/CourseList.jsp");
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/kostas.jsp");
 			requestDispatcher.forward(request,response);
 		}else if (action.equalsIgnoreCase("AssignCourseToProf")){
 			request.setAttribute("action","AssignCourseToProf");
 
 			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/AssignCourse.jsp");
 			requestDispatcher.forward(request,response);
+		}else if (action.equalsIgnoreCase("viewSecretaryDetails")){
+			request.setAttribute("action","viewSecretaryDetails");
+			//System.out.println("Name= "+secretary.getName());
+			session.setAttribute("surname", secretary.getSurname());
+			session.setAttribute("department", secretary.getDepartment());
+
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/secretary.jsp");
+			requestDispatcher.forward(request,response);
 		}
+
 	}
 
 
@@ -67,7 +75,5 @@ public class SecretaryController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doPost(req, resp);
 	}
-
-
 
 }
