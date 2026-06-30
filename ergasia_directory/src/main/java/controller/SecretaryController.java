@@ -49,7 +49,7 @@ public class SecretaryController extends HttpServlet {
 			session.setAttribute("surname", secretary.getSurname());
 			session.setAttribute("department", secretary.getDepartment());
 
-			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/kostas.jsp");
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Sec_ClasPrinting.jsp");
 			requestDispatcher.forward(request,response);
 		}else if (action.equalsIgnoreCase("AssignCourseToProf")){
 			request.setAttribute("action","AssignCourseToProf");
